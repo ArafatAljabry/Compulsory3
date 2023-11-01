@@ -1,8 +1,11 @@
 #pragma once
+#pragma warning(disable : 4996) // fix this shit
+#include "filesclass.h"
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
-#include "filesclass.h"
+#include <time.h>
+#include <string>
 using namespace std;
 
 // Both: name, size and date of creation, creation of new folder and file; rand size up to 100,name, size and date(function)
@@ -17,71 +20,141 @@ class folder {
 private:
 	string name;
 	int size;
-	string dOfCreation;
+	// current time based on system
+	char* dOfCreation;
 	files* filesArray[10];
 	folder* folderArray[5];
-public:
-	folder(string newName, int newSize) {
-		srand(time(0)); // sets the seed for rand() using time.
 
+public:
+	folder(string newName) {
+		srand((unsigned)time(0)); // sets the seed for rand() using time.
 		name = newName;
-		size = rand() % 100 + 1;//generates rand number between 1-100
-		dOfCreation = time(0); // current time based on system
+		size = rand() % 100 + 1;//generates rand number between 1-100		
+		time_t timeNow = time(0);
+		dOfCreation = ctime(&timeNow);
+		for (int i = 0; i < 5; i++)
+		{
+			folderArray[i] = nullptr;
+			filesArray[i] = nullptr;
+		}
+	}
+
+
+
+	/// <summary>
+	/// Get the name of the folder
+	/// </summary>
+	string getFolderName() {
+		return name;
 	}
 
 	/// <summary>
-	/// Returns the name of the folder
+	/// Get the size of the folder
+	/// </summary>
+	string getFolderSize() {
+		return size + "mb";
+	}
+	
+	/// <summary>
+	/// Get the date of which the of the folder was made
 	/// </summary>
 	/// <returns></returns>
-	string getFolderName();
+	string getFolderDate() {
+		return dOfCreation;
+	}
+
+	
+	
+	void getFoldersFromArray() {
+		for (int i = 0; i < 5; i++)
+		{
+		cout << folderArray[i] << ", ";
+		}
+	}
+
 
 	/// <summary>
-	/// returns the size of the folder
-	/// </summary>
-	/// <returns></returns>
-	string getFolderSize();
-
-	/// <summary>
-	/// returns the date of creation of a folder
-	/// </summary>
-	/// <returns></returns>
-	string getFolderDate();
-
-	/// <summary>
-	/// Changes the name of the folder
+	/// Change name of the folder
 	/// </summary>
 	/// <param name="newName"></param>
-	void changeFolderName(string newName);
+	void changeFolderName(string newName) {
+		name = newName;
+	}
+	/// <summary>
+	/// Adds folder to the array of folders
+	/// </summary>
+	void addFolder(folder* newFolder) {
+		for (int i = 0; i < 5; i++) {
+			if (folderArray[i] == nullptr)
+			{
+				folderArray[i] = newFolder;
+				break;
+			}
+		}
+		cout << "done did-it";
+	}
+
+	
+	void changeFolderArray(string oldFolder, folder* newFolder) {
+		for (int i = 0; i < 5; i++)
+		{
+			if (folderArray[i]->name == oldFolder) {
+				folderArray[i] = newFolder;
+			}
+		}
+	}
+	
+	
+	int addFile(files* newFile) {
+		for (int i = 0; i < 10; i++)
+		{
+			if (filesArray[i] == nullptr) {
+				filesArray[i] = newFile;
+				cout << "File added to " + getFolderName();
+				return 0;
+				break;
+			}
+			else {
+				cout << "Folder is full";
+				return 1;
+				break;
+			}
+		}
+	}
+	/// <summary>
+	/// Change the file in the array
+	/// </summary>
+	void changeFileArray(string oldFile, files* newFile) {
+		for (int i = 0; i < 10; i++)
+		{
+			if (filesArray[i]->getFileName() == oldFile) {
+				filesArray[i] = newFile;
+			}
+		}
+	}
 
 	/// <summary>
-	/// Print all information stored on the folder
+	/// prints info on the folder
 	/// </summary>
-	void printAllInfo();
-
-	/// <summary>
-	/// Adds a new pointer to a folder to an empty space on the array of folders 
-	/// </summary>
-	/// <param name="newFolder"></param>
-	void addFolder(folder* newFolder);
-
-	/// <summary>
-	/// switch out a folder in an array
-	/// </summary>
-	/// <param name="oldFolder"></param>
-	/// <param name="newFolder"></param>
-	void changeFolderArray(string oldFolder, folder* newFolder);
-
-	void addFile(folder* newfile);
-
-	void changeFileArray(string oldFile, files* newFile);
-
-	void printFolderInfo() {
+	void printFolderInfo() { 
 		cout << name << endl;
 		cout << size << endl;
 		cout << dOfCreation << endl;
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			cout << filesArray[i] << ", ";
+			if(folderArray[i] != nullptr)
+			{
+				cout << folderArray[i]->getFolderName() << ", ";
+			}
+			else {
+				cout << "Empty,";
+			}
 		}
 	}
+
+	void deletus() {
+		//todo: delete the thang
+	}
+
+	
 };

@@ -1,47 +1,51 @@
 #pragma once
 #include <iostream>
+#include <ctime>
+#include <stdlib.h>
+#include <time.h>
+#include <string>
 using namespace std;
 
 class files{
 private:
 	string name;
 	int size;
-	string dOfCreation;
+	string dOfCreation;	
 
 public:
 	files(string newName) {
-		srand(time(0)); // sets the seed for rand() using time.
+		srand((unsigned)time(0)); // sets the seed for rand() using time.
 
 		name = newName;
 		size = rand() % 100 + 1;//generates rand number between 1-100
-		dOfCreation = time(0); // current time based on system
-
+		time_t timeNow = time(0);
+		dOfCreation = ctime(&timeNow); // current time based on system
 	}
 
+	string getFileName() {
+		return name;
+	}
+	
 	/// <summary>
-	/// Get the name of the file
+	/// Gets the size of the file
 	/// </summary>
-	/// <returns></returns>
-	string getFileName();
+	/// <returns>Filesize as a string</returns>
+	string getFilesSize() {
+		return size + "mb";
+	}
 
-	/// <summary>
-	/// Get the size of the file
-	/// </summary>
-	/// <returns></returns>
-	string getFilesSize();
+	string getFilesDate() {
+		return dOfCreation;
+	}
 
+	void changeFileName(string newName) {
+		name = newName;
+	}
 
-	string getFilesDate();
-
-	/// <summary>
-	/// changes name of a given folder
-	/// </summary>
-	/// <param name="newName"></param>
-	void changeFileName(string newName);
-
-	/// <summary>
-	/// prints file information
-	/// </summary>
-	void printFileInfo();
-
+	void printFileInfo() {
+		cout << name << endl;
+		cout << size << endl;
+		cout << dOfCreation << endl;
+	}
+	 //TODO: fix det her
 };

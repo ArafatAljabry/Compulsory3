@@ -1,92 +1,74 @@
-#include <iostream>
 #include "folderclass.h"
 #include "filesclass.h"
+#include <iostream>
+#include <ctime>
+#include <stdlib.h>
+#include <time.h>
+#include <string>
+using namespace std;
 
-//Notes:
-//  Goal:
-//  classes: folder and file
-// Both: name, size and date of creation, creation of new folder and file; rand size up to 100,name, size and date(function)
-//       change name(function) print all info(with folder include files within)
-// Folder: array of maximum 10 files and array of maximum 5 folders
-// Main:
-//      create Files and folder, look through file in folder(print the info)
-
+void createFolder(folder* rootFolder, string nameOfFolder) {
+	folder* newFolder =  new folder(nameOfFolder);
+	rootFolder->addFolder(newFolder);
+}
+void createFile(bool addToFolder, string nameOfFile) {
+	files* newFile = new files(nameOfFile);
+	if(addToFolder) {
+		//todo: add it to the folder if ya want to
+	}
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
-}
+	int menuChoice;
+	//parent folder to hold them all
+	folder parentFolder("parent");
+	 
+	cout << "(1) Move to folder" << endl
+		 << "(2) Create file" << endl
+		 << "(3) See map information" << endl
+		 << "(4) Rename file" << endl
+		 << "(4) Rename folder" << endl
+		 << "(5) Biggest file in a folder"<< endl;
 
-
-//Defining functions for folders class
-string folder::getFolderName() {
-    return name;
-}
-
-string folder::getFolderSize() {
-	return size + "mb";
-}
-
-string folder::getFolderDate() {
-	return dOfCreation;
-}
-void folder::changeFolderName(string newName) {
-	name = newName;
-}
-void folder::addFolder(folder* newFolder) {
-	for (int i = 0; i < 5; i++) {
-		if (folderArray[i] == 0)
-		{
-			folderArray[i] = newFolder;
-		}
-	}
-}
-
-void folder::changeFolderArray(string oldFolder, folder* newFolder) {
-	for (int i = 0; i < 5; i++)
+	//todo: Add protection against wrong input
+	cin >> menuChoice;
+	cout << "Current Folder: " + parentFolder.getFolderName();
+	parentFolder.getFoldersFromArray();
+	//todo: eat a potato
+	string nameOfFolder;
+	
+	switch (menuChoice)
 	{
-		if (folderArray[i]->name == oldFolder) {
-			folderArray[i] = newFolder;
-		}
+	case 1:
+		//create folder
+		cout << "Name of folder: ";
+		cin >> nameOfFolder;
+		//create a new folder and add it to parent folder
+		createFolder(&parentFolder,nameOfFolder);
+		
+		cout << parentFolder.getFolderName();
+		
+		parentFolder.printFolderInfo();
+
+		
+		
+		// does it make folder? does it add it to the array? why error on printinfo
+		break;
+	case 2:
+		//create file
+		break;
+	case 3:
+		// see obj  information
+		break;
+	case 4:
+		// rename file
+		break;
+	case 5:
+		// biggest file in folder
+		break;
+	default:
+		break;
 	}
-}
 
-void folder::addFile(folder* newFile) {
-	for (int i = 0; i < 10; i++)
-	{
-		if (filesArray[i] == 0) {
-			folderArray[i] = newFile;
-		}
-	}
-}
-
-void folder::changeFileArray(string oldFile, files* newFile) {
-	for (int i = 0; i < 10; i++)
-	{
-		if (filesArray[i]->getFileName() == oldFile) {
-			filesArray[i] == newFile;
-		}
-	}
-}
-
-// Defining functions for files class
-string files::getFileName() {
-	return name;
-}
-
-string files::getFilesSize() {
-	return size + "mb";
-}
-
-string files::getFilesDate() {
-	return dOfCreation;
-}
-void files::changeFileName(string newName) {
-	name = newName;
-}
-
-void files::printFileInfo() {
-	cout << name << endl;
-	cout << size << endl;
-	cout << dOfCreation << endl;
 }

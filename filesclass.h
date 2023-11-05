@@ -21,31 +21,43 @@ public:
 		time_t timeNow = time(0);
 		dOfCreation = ctime(&timeNow); // current time based on system
 	}
+	~files() { cout << "File deleted"; }
 
-	string getFileName() {
+	///<summary>
+	///Gets name of file
+	///<summary>
+	string getFilesName() {
 		return name;
 	}
 	
 	/// <summary>
 	/// Gets the size of the file
 	/// </summary>
-	/// <returns>Filesize as a string</returns>
-	string getFilesSize() {
-		return size + "mb";
+	/// <returns>Filesize as a int</returns>
+	int getFilesSize() {
+		return size;
 	}
-
+	
+	/// <summary>
+	/// get date and time of creation
+	/// </summary>
 	string getFilesDate() {
 		return dOfCreation;
 	}
 
-	void changeFileName(string newName) {
+	/// <summary>
+	/// change the name of the file
+	/// </summary>
+	void changeFilesName(string newName) {
 		name = newName;
 	}
 
-	void printFileInfo() {
-		cout << name << endl;
-		cout << size << endl;
-		cout << dOfCreation << endl;
-	}
-	 //TODO: fix det her
+	/// <summary>
+	/// print information saved on object
+	/// </summary>
+	void printFilesInfo() {
+		cout << endl << "Name: " << name << endl;
+		cout << "Size: " << size << endl;
+		cout << "Created: " << dOfCreation << endl;
+	} 
 };

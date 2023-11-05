@@ -30,25 +30,7 @@ int validateInt(int input,int min, int max) {
 	}
 	return input;
 }
-/// <summary>
-/// validates the input for a string
-/// </summary>
-/// <param name="input"></param>
-string validateString(string input) {
-	for (;;) {
-		if (cin >> input) {
-			break;
-		}
-		else {
-			cout << "Not valid input" << endl;
-			//clears I/O before asking again if wrong input
-			//avoids infinite loop since cin saves input
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		}
-	}
-	return input;
-}
+
 
 /// <summary>
 /// create a folder and add to current folder
@@ -77,8 +59,13 @@ void createFile(folder* thisFolder, string nameOfFile) {
 
 
 int main() 
-{
+{	
+
 	int menuChoice = 0;
+	string nameOfFolder;
+	string nameOfFile;
+	int biggestFile = 0;
+
 	//parent folder to hold them all
 	folder* parentFolder = new folder("parent");
 	//holds on the current folder
@@ -87,10 +74,6 @@ int main()
 	//vector to hold previousFolder as one gets deeper
 	vector<folder*> previousFoldersBackLog;
 	
-	string nameOfFolder;
-	string nameOfFile;
-	int biggestFile = 0;
-	
 	// An array to use for displaying content in folders
 	folder* currentFolderArray[5];
 	//Display files
@@ -98,7 +81,7 @@ int main()
 	
 
 	do {
-		cout << "Any change, is done to the current folder" << endl << endl;
+		cout << "Any change will be done to the folder you are in (current Folder)" << endl << endl;
 		// fill the array with "currentFolder" data
 		currentFolder->getFolderArray(currentFolderArray);
 		//get the files
@@ -106,6 +89,7 @@ int main()
 		//Show where you are and where you can go
 		cout << "Previous Folder: " + previousFolder->getFolderName() << endl;
 		cout << "Current Folder: " + currentFolder->getFolderName() << endl <<endl;
+		//List folders
 		cout << "Folders: " << endl;
 		for (int i = 0; i < 5; i++)
 		{
@@ -117,6 +101,7 @@ int main()
 				cout << currentFolderArray[i]->getFolderName() + ", ";
 			}
 		}
+		//list files
 		cout << endl << endl << "Files: " << endl;
 		for (int i = 0; i < 10; i++)
 		{
@@ -146,11 +131,11 @@ int main()
 			<< "(9) Biggest file in this folder" << endl
 			<< "(10) End program" << endl
 			<< endl << "Choose: ";
-		//todo: add input protection on every input
+		
 		switch (validateInt(menuChoice,0,11))
 		{
 		case 1:
-			//move to folder
+			//move to a folder
 			cout << "Name: ";
 			cin >> nameOfFolder;
 
@@ -168,6 +153,7 @@ int main()
 				cout << endl << nameOfFolder << " does not exist." << endl;
 			}
 			break;
+
 		case 2:
 			//returns to previous folder if there is one
 			currentFolder = previousFoldersBackLog.back();
@@ -181,6 +167,7 @@ int main()
 
 			previousFolder->getFolderArray(currentFolderArray);
 			break;
+
 		case 3:
 			//create folder
 			cout << "Name of folder: ";
@@ -188,6 +175,7 @@ int main()
 			//create a new folder and add it to parent folder
 			createFolder(currentFolder, nameOfFolder);
 			break;
+
 		case 4:
 			// create file
 			cout << "Name of File: ";
@@ -195,6 +183,7 @@ int main()
 			//create a new folder and add it to parent folder
 			createFile(currentFolder, nameOfFile);
 			break;
+
 		case 5:
 			// rename file
 			cout << "File: ";
@@ -211,6 +200,7 @@ int main()
 				else { cout << "Couldn't find file"; break; }
 			}
 			break;
+
 		case 6:
 			// rename folder
 			cout << "Folder: ";
@@ -227,6 +217,7 @@ int main()
 				else { cout << "Couldn't find folder"; break; }
 			}
 			break;
+
 		case 7:
 			// Delete folder
 			cout << "Folder: ";
@@ -243,7 +234,6 @@ int main()
 
 		case 8:
 			//delete file
-			//todo:makes the array smaller for some reason
 			cout << "Folder: ";
 			cin >> nameOfFile;
 			for (int i = 0; i < 5; i++) {
@@ -255,6 +245,7 @@ int main()
 				break;
 			}
 			break;
+
 		case 9:
 			// biggest file in this folder
 			for (int i = 0; i < 10; i++)
@@ -264,7 +255,6 @@ int main()
 						biggestFile = currentFilesArray[i]->getFilesSize();
 					}
 				}
-				
 			}
 			for (int i = 0; i < 10; i++)
 			{
@@ -275,6 +265,7 @@ int main()
 				}
 			}
 			break;
+
 		case 10:
 			return 0;
 		default:
